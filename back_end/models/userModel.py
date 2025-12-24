@@ -1,34 +1,55 @@
-from extensions import db 
-from datetime import datetime
-from sqlalchemy import Numeric
+from ..db_connect import Database
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username=db.Column(db.String(80), unique=True, nullable=False)
-    email=db.Column(db.String(80), unique=True, nullable=False )
-    password=db.Column(db.String(40), nullable=False)
+class User:
+    table_name = "users"
 
-class Category(db.Model):
-    __tablename__='categories'
-    id = db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String(80), unique= True, nullable=False)
-    users_id=db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    
-class Expense(db.Model):
-    __tablename__='expenses'
-    id=db.Column(db.Integer, primary_key=True)
-    amount=db.Column(Numeric(10,2), nullable=False)
-    description=db.Column(db.String(140))
-    date=db.Column(db.DateTime, default=datetime.utcnow)
-    user_id=db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    category_id=db.Column(db.Integer, db.ForeignKey('categories.id'))
+    @staticmethod
+    def find_all():
+        return Database.query(f"SELECT * FROM {User.table_name}")
 
-class Budget(db.Model):
-    __tablename__="budgets"
-    id=db.Column(db.Integer, primary_key=True)
-    amount=db.Column(Numeric(10,2), nullable=False)
-    month=db.Column(db.Integer, nullable=False)
-    year=db.Column(db.Integer, nullable=False)
-    day=db.Column(db.Integer, nullable=False)
-    user_id=db.Column(db.Integer,db.ForeignKey('users.id'), nullable=False)
+    @staticmethod
+    def find_by_id(user_id):
+        return Database.query(
+            f"SELECT * FROM {User.table_name} WHERE id=%s",
+            (user_id,),
+            one=True
+        )
+
+    @staticmethod
+    def create(data):
+        sql = f"""
+        INSERT INTO {User.table_name} (username, email, password)
+        VALUES (%s, %s, %s) RETURNING id
+        """
+        user_id = Database.query(
+            sql,
+            (data['username'], data['email'], data['password']),
+            one=True
+        )[0]
+        return User.find_by_id(user_id)
+
+    @staticmethod
+    def update(user_id, data):
+        sql = f"""
+        UPDATE {User.table_name}
+        SET username=%s, email=%s, password=%s
+        WHERE id=%s
+        """
+        Database.execute(sql, (data['username'], data['email'], data['password'], user_id))
+        return User.find_by_id(user_id)
+
+    @staticmethod
+    def delete(user_id):
+        Database.execute(
+            f"DELETE FROM {User.table_name} WHERE id=%s",
+            (user_id,)
+        )
+        return True
+
+    @staticmethod
+    def count():
+        return Database.query(
+            f"SELECT COUNT(*) FROM {User.table_name}",
+            one=True
+        )[0]
+
