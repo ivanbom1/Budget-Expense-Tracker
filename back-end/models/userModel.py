@@ -1,4 +1,4 @@
-from ..db_connect import Database
+from ..db.db_connect import Database
 
 class User:
     table_name = "users"
