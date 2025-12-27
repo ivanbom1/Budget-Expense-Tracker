@@ -1,6 +1,6 @@
 from ..models.userModel import User
 
-class userService:
+class UserService:
     @staticmethod
     def get_all_by_users():
         try:
@@ -40,6 +40,7 @@ class userService:
         
         except Exception as e :
             print(f"error while updating user:{e}")
+            return None
 
 
     @staticmethod
