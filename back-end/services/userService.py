@@ -49,10 +49,12 @@ class userService:
         except Exception as e:
             print(f"error while deleting user:{e}")
             return None
-    
+        
+    @staticmethod
     def count_user():
         try:
             return User.count()
         except Exception as e:
             print(f"error while counting users:{e}")
+            return None
 
