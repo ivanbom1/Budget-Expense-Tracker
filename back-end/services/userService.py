@@ -40,6 +40,7 @@ class userService:
         
         except Exception as e :
             print(f"error while updating user:{e}")
+            return None
 
 
     @staticmethod
