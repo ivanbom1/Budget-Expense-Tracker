@@ -1,6 +1,6 @@
 from ..models.userModel import User
 
-class userService:
+class UserService:
     @staticmethod
     def get_all_by_users():
         try:
