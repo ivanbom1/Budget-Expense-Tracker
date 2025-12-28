@@ -22,7 +22,7 @@ class PocketService:
         
 
     @staticmethod        
-    def getPocketById(user_id):
+    def getPocketByUserId(user_id):
         try:
             pockets = Pocket.find_by_user(user_id)
             if pockets is None:

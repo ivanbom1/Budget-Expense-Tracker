@@ -18,7 +18,7 @@ class PocketController:
     @staticmethod
     def get_user_pockets(user_id):
 
-        pockets = PocketService.getPocketById(user_id)
+        pockets = PocketService.getPocketByUserId(user_id)
         
         if pockets:
             return jsonify({"status": "success", "pockets": [p.__dict__ for p in pockets]}), 200
