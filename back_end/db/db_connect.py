@@ -1,11 +1,9 @@
 import psycopg2
-from db_config import Config
+from .db_config import Config
 
 class Database:
-
     @staticmethod
     def query(sql, params=None, one=False):
-
         conn = psycopg2.connect(
             host=Config.DB_HOST,
             database=Config.DB_NAME,
@@ -20,10 +18,8 @@ class Database:
         conn.close()
         return result
     
-    
     @staticmethod
     def execute(sql, params=None):
-
         conn = psycopg2.connect(
             host=Config.DB_HOST,
             database=Config.DB_NAME,
@@ -33,6 +29,8 @@ class Database:
         )
         cur = conn.cursor()
         cur.execute(sql, params)
+        result = cur.fetchone()
         conn.commit()
         cur.close()
         conn.close()
+        return result

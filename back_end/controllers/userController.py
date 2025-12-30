@@ -29,14 +29,13 @@ class UserController:
             data = request.get_json()
             if not data:
                 return jsonify({"status": "error", "message": "Request body required"}), 400
-
             if not all(k in data for k in ("username", "email", "password")):
-                 return jsonify({"status": "error", "message": "Missing required fields (username, email, password)"}), 400
-
+             
+                return jsonify({"status": "error", "message": "Missing required fields (username, email, password)"}), 400
             user = UserService.createUser(data)
-            
+        
             if user:
-                return jsonify({"status": "success", "user": user}), 201
+                return jsonify({"status": "success", "user": user.to_dict()}), 201
             return jsonify({"status": "error", "message": "Failed to create user. Email or Username might already exist."}), 400
         except Exception as e:
             return jsonify({"status": "error", "message": str(e)}), 500

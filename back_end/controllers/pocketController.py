@@ -36,7 +36,7 @@ class PocketController:
         pocket = PocketService.createPocket(user_id, data)
         
         if pocket:
-            return jsonify({"status": "success", "pocket": pocket.__dict__}), 201
+            return jsonify({"status": "success", "pocket": pocket.to_dict()}), 201
         return jsonify({"status": "error", "message": "Failed to create pocket"}), 400
 
 
