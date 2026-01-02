@@ -5,7 +5,7 @@ from back_end.routes.userRoutes import user_routes
 
 app = Flask(__name__)
 
-app.register_blueprint(pocket_bp, url_prefix='/pockets') # Register pocket blueprint
+app.register_blueprint(pocket_bp) # Register pocket blueprint
 app.register_blueprint(user_routes, url_prefix='/users') # Register user blueprint
 
 
