@@ -22,6 +22,7 @@ class User:
             (user_id,),
             one=True
         )
+        print(result)
         if not result:
             return None
         return User(id=result[0], username=result[1], email=result[2], password=result[3])
@@ -75,14 +76,34 @@ class User:
 
     @staticmethod
     def update(user_id, data):
-        sql = f"""
-        UPDATE {User.table_name}
-        SET username=%s, email=%s, password=%s
-        WHERE id=%s
-        """
-        hashed_password = generate_password_hash(data['password']) if 'password' in data else data.get('password')
-        Database.execute(sql, (data['username'], data['email'], hashed_password, user_id))
-        return User.find_by_id(user_id)
+        try:
+            updates = []
+            params = []
+
+            if 'username' in data:
+                updates.append("username=%s")
+                params.append(data['username'])
+            if 'email' in data:
+                updates.append("email=%s")
+                params.append(data['email'])
+            if 'password' in data:
+                updates.append("password=%s")
+                params.append(generate_password_hash(data['password']))
+    
+            if not updates:
+                return User.find_by_id(user_id)
+    
+            params.append(user_id) 
+            sql = f"UPDATE {User.table_name} SET {', '.join(updates)} WHERE id=%s"
+            print(f"SQL: {sql}")
+            print(f"Params: {params}")
+            Database.execute(sql, tuple(params))
+            user = User.find_by_id(user_id)
+            print(f"Updated user: {user}")
+            return user
+        except Exception as e:
+            print(f"Error in update: {e}")
+            raise
 
     @staticmethod
     def delete(user_id):

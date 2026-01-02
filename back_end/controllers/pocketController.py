@@ -41,26 +41,31 @@ class PocketController:
 
 
     @staticmethod
-    def update_pocket(pocket_id):
-
+    def update_pocket(user_id, pocket_id):
         data = request.get_json()
-
         if not data:
             return jsonify({"status": "error", "message": "Request body required"}), 400
-
-        pocket = PocketService.updateById(pocket_id, data)
-
-        if pocket:
-            return jsonify({"status": "success", "pocket": pocket.to_dict()}), 200
+    
+    # Verify pocket belongs to user
+        pocket = PocketService.getPocketById(pocket_id)
+        if not pocket or pocket.user_id != user_id:
+            return jsonify({"status": "error", "message": "Pocket not found"}), 404
+    
+        updated_pocket = PocketService.updateById(pocket_id, data)
+        if updated_pocket:
+            return jsonify({"status": "success", "pocket": updated_pocket.to_dict()}), 200
         return jsonify({"status": "error", "message": "Failed to update pocket"}), 400
 
 
     @staticmethod
-    def delete_pocket(pocket_id):
-
+    def delete_pocket(user_id, pocket_id):
         try:
+            # Verify pocket belongs to user
+            pocket = PocketService.getPocketById(pocket_id)
+            if not pocket or pocket.user_id != user_id:
+                return jsonify({"status": "error", "message": "Pocket not found"}), 404
+        
             PocketService.deleteById(pocket_id)
             return jsonify({"status": "success", "message": "Pocket deleted"}), 200
-
         except Exception as e:
             return jsonify({"status": "error", "message": str(e)}), 400
