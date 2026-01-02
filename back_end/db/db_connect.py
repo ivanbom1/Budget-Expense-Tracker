@@ -1,3 +1,4 @@
+from unittest import result
 import psycopg2
 from .db_config import Config
 
@@ -17,7 +18,8 @@ class Database:
         cur.close() 
         conn.close()
         return result
-    
+
+
     @staticmethod
     def execute(sql, params=None):
         conn = psycopg2.connect(
@@ -29,8 +31,11 @@ class Database:
         )
         cur = conn.cursor()
         cur.execute(sql, params)
-        result = cur.fetchone()
         conn.commit()
+    
+        result = cur.fetchone() if "RETURNING" in sql else None
+    
         cur.close()
         conn.close()
         return result
+    
