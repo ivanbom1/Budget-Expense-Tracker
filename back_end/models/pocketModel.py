@@ -1,4 +1,4 @@
-from ..db.db_connect import Database
+from db.db_connect import Database
 
 class Pocket:
     table_name = "pockets"
@@ -25,8 +25,14 @@ class Pocket:
         
         result = Database.execute(
             sql,
-            (user_id, data['pocket_name'], data.get('description'), 
-             data.get('balance', 0), data.get('goal', 0), data.get('currency'))
+            (
+                user_id,
+                data['name'],                      # FIX
+                data.get('description'),
+                data.get('balance', 0),
+                data.get('goal', 0),
+                data.get('currency', 'USD')        # FIX
+            )
         )
         
         if not result:

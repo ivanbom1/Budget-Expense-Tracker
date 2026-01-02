@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from ..services.pocketService import PocketService
+from services.pocketService import PocketService
 
 
 class PocketController:

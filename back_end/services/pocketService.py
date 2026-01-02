@@ -1,5 +1,5 @@
-from ..models.pocketModel import Pocket
-from ..models.userModel import User
+from models.pocketModel import Pocket
+from models.userModel import User
 
 class PocketService:
     
