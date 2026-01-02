@@ -18,7 +18,7 @@ class UserController:
         try:
             user = UserService.get_by_user_id(user_id)
             if user:
-                return jsonify({"status": "success", "user": user}), 200
+                return jsonify({"status": "success", "user": user.to_dict()}), 200
             return jsonify({"status": "error", "message": "User not found"}), 404
         except Exception as e:
             return jsonify({"status": "error", "message": str(e)}), 500
@@ -50,7 +50,7 @@ class UserController:
             user = UserService.update_user(user_id, data)
             
             if user:
-                return jsonify({"status": "success", "user": user}), 200
+                return jsonify({"status": "success", "user": user.to_dict()}), 200
             return jsonify({"status": "error", "message": "Failed to update user. User might not exist."}), 404
         except Exception as e:
             return jsonify({"status": "error", "message": str(e)}), 500
