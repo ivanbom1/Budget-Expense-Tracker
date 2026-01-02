@@ -11,7 +11,7 @@ class PocketController:
         pocket = PocketService.getPocketById(pocket_id)
         
         if pocket:
-            return jsonify({"status": "success", "pocket": pocket.__dict__}), 200
+            return jsonify({"status": "success", "pocket": pocket.to_dict()}), 200
         return jsonify({"status": "error", "message": "Pocket not found"}), 404
     
     
@@ -21,7 +21,7 @@ class PocketController:
         pockets = PocketService.getPocketByUserId(user_id)
         
         if pockets:
-            return jsonify({"status": "success", "pockets": [p.__dict__ for p in pockets]}), 200
+            return jsonify({"status": "success", "pockets": [p.to_dict() for p in pockets]}), 200
         return jsonify({"status": "error", "message": "No pockets found"}), 404
 
 
@@ -51,7 +51,7 @@ class PocketController:
         pocket = PocketService.updateById(pocket_id, data)
 
         if pocket:
-            return jsonify({"status": "success", "pocket": pocket.__dict__}), 200
+            return jsonify({"status": "success", "pocket": pocket.to_dict()}), 200
         return jsonify({"status": "error", "message": "Failed to update pocket"}), 400
 
 
