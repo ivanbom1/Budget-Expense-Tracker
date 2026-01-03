@@ -52,4 +52,3 @@ class User:
             f"SELECT COUNT(*) FROM {User.table_name}",
             one=True
         )[0]
-
