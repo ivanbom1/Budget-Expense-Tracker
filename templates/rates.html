@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Rates</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid black; 
+            margin: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 2px solid black;
+            background-color: #fff;
+        }
+
+        .nav-links a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .auth-links a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 40px;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            color: #666;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .converter {
+            max-width: 500px;
+            margin: 0 auto 40px;
+            padding: 20px;
+            border: 2px solid #ddd;
+        }
+
+        .converter h2 {
+            margin-bottom: 20px;
+        }
+
+        .converter div {
+            margin-bottom: 15px;
+        }
+
+        .converter label {
+            display: inline-block;
+            width: 80px;
+            font-weight: bold;
+        }
+
+        .converter input,
+        .converter select {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        .rates {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #ddd;
+        }
+
+        .rates h2 {
+            margin-bottom: 20px;
+        }
+
+        .rates table {
+            width: 100%;
+        }
+
+        .rates td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .rates td:last-child {
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-links">
+            <a href="#">About Us</a>
+            <a href="Main.html">Dashboard</a>
+        </div>
+        
+        <div class="auth-links">
+            <a href="login_page.html">Login / Profile</a>
+        </div>
+    </header>
+
+    <main>
+        <h1>Exchange Rates</h1>
+
+        <div class="converter">
+            <h2>Currency Converter</h2>
+            <div>
+                <label>Amount:</label>
+                <input type="number" id="amount" value="1">
+            </div>
+            <div>
+                <label>From:</label>
+                <select id="fromCurrency">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="JPY">JPY</option>
+                </select>
+            </div>
+            <div>
+                <label>To:</label>
+                <select id="toCurrency">
+                    <option value="USD">USD</option>
+                    <option value="EUR" selected>EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="JPY">JPY</option>
+                </select>
+            </div>
+            <div>
+                <strong>Result: <span id="result">0.85</span></strong>
+            </div>
+        </div>
+
+        <div class="rates">
+            <h2>Current Rates (1 USD =)</h2>
+            <table>
+                <tr>
+                    <td>EUR - Euro</td>
+                    <td>0.85</td>
+                </tr>
+                <tr>
+                    <td>GBP - British Pound</td>
+                    <td>0.73</td>
+                </tr>
+                <tr>
+                    <td>JPY - Japanese Yen</td>
+                    <td>110.50</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        const rates = {
+            'USD': 1,
+            'EUR': 0.85,
+            'GBP': 0.73,
+            'JPY': 110.50
+        };
+
+        function convert() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+
+            const amountInUSD = amount / rates[from];
+            const result = amountInUSD * rates[to];
+
+            document.getElementById('result').textContent = result.toFixed(2);
+        }
+
+        document.getElementById('amount').addEventListener('input', convert);
+        document.getElementById('fromCurrency').addEventListener('change', convert);
+        document.getElementById('toCurrency').addEventListener('change', convert);
+
+        convert();
+    </script>
+</body>
+</html>
