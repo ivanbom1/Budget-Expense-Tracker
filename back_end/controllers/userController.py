@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from ..services.userService import UserService
+from services.userService import UserService
 
 class UserController:
 
@@ -22,7 +22,17 @@ class UserController:
             return jsonify({"status": "error", "message": "User not found"}), 404
         except Exception as e:
             return jsonify({"status": "error", "message": str(e)}), 500
-
+        
+    @staticmethod
+    def get_user_by_username(username):
+        try:
+            user = UserService.get_by_username(username)
+            if user:
+                return jsonify({"status": "success", "user": user.to_dict()}), 200
+            return jsonify({"status": "error", "message": "User not found"}), 404
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 500
+        
     @staticmethod
     def create_user():
         try:

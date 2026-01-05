@@ -1,4 +1,6 @@
-from ..models.userModel import User
+from unittest import result
+from db.db_connect import Database
+from models.userModel import User
 
 class UserService:
     @staticmethod
@@ -15,6 +17,14 @@ class UserService:
             return User.find_by_id(user_id)
         except Exception as e:
             print(f"Error while fetching user:{e}")
+            return None
+        
+    @staticmethod
+    def get_by_username(username):
+        try:
+            return User.getByUsername(username)
+        except Exception as e:
+            print(f"Error while fetching user by username:{e}")
             return None
 
     @staticmethod

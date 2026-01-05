@@ -1,4 +1,4 @@
-from ..db.db_connect import Database
+from db.db_connect import Database
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User:
@@ -27,6 +27,14 @@ class User:
             return None
         return User(id=result[0], username=result[1], email=result[2], password=result[3])
 
+    @staticmethod
+    def getByUsername(username):
+        sql = f"SELECT * FROM users WHERE username=%s"
+        result = Database.query(sql, (username,), one=True)
+        if not result:
+            return None
+        return User(id=result[0], username=result[1], email=result[2], password=result[3])
+    
     @staticmethod
     def find_by_email(email):
         result = Database.query(
@@ -125,7 +133,8 @@ class User:
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            "password": self.password
         }
 
     def verify_password(self, password):
