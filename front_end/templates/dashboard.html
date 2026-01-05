@@ -112,6 +112,8 @@
     
     .content {
         padding: 32px;
+        max-width: 1200px;
+        margin: 0 auto;
     }
     
     .create-pocket {
@@ -130,14 +132,16 @@
     .create-form {
         display: flex;
         gap: 12px;
+        flex-wrap: wrap;
     }
     
     .create-form input {
         flex: 1;
+        min-width: 150px;
     }
     
-    .create-form input:last-of-type {
-        flex: 0 0 120px;
+    .create-form select {
+        min-width: 100px;
     }
     
     .pockets-grid {
@@ -171,21 +175,6 @@
     .pocket-name {
         font-size: 18px;
         font-weight: 600;
-    }
-    
-    .pocket-badge {
-        background: rgba(59, 130, 246, 0.2);
-        color: #93c5fd;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-    
-    .pocket-amount {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 16px;
     }
     
     .pocket-bar {
@@ -235,50 +224,62 @@
         </div>
     </div>
     
-<div class="create-pocket">
-    <h3>Add New Pocket</h3>
-
-    <form class="create-form" method="POST" action="/pocket/create">
-
-        <input
-            type="text"
-            name="name"
-            placeholder="Pocket name"
-            required
-        >
-
-        <input
-            type="text"
-            name="description"
-            placeholder="Description (optional)"
-        >
-
-        <input
-            type="number"
-            name="balance"
-            placeholder="Starting balance"
-            step="0.01"
-            value="0"
-        >
-
-        <input
-            type="number"
-            name="goal"
-            placeholder="Goal amount"
-            step="0.01"
-            required
-        >
-
-        <select name="currency" required>
-            <option value="USD" selected>USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-        </select>
-
-        <button type="submit" class="btn btn-primary">
-            ➕ Add
-        </button>
-    </form>
-</div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Dashboard</h2>
+        </div>
+        
+        <div class="content">
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            
+            <!-- Create Pocket -->
+            <div class="create-pocket">
+                <h3>Add New Pocket</h3>
+                <form class="create-form" method="POST" action="/pocket/create">
+                    <input type="text" name="pocket_name" placeholder="Pocket name" required>
+                    <input type="text" name="description" placeholder="Description (optional)">
+                    <input type="number" name="balance" placeholder="Starting balance" step="0.01" value="0">
+                    <input type="number" name="goal" placeholder="Goal amount" step="0.01" required>
+                    <select name="currency" required>
+                        <option value="USD" selected>USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="BTC">BTC</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">➕ Add</button>
+                </form>
+            </div>
+            
+            <!-- Pockets Grid -->
+            {% if pockets %}
+                <div class="pockets-grid">
+                    {% for pocket in pockets %}
+                        <a href="/pocket/{{ pocket.id }}" class="pocket-card" style="text-decoration: none; color: inherit;">
+                            <div class="pocket-header">
+                                <div class="pocket-name">{{ pocket.pocket_name }}</div>
+                            </div>
+                            <div class="pocket-bar">
+                                <div class="pocket-progress" style="width: {% if pocket.goal|float > 0 %}{{ (pocket.balance|float / pocket.goal|float * 100)|int }}{% else %}0{% endif %}%"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; color: #94a3b8; font-size: 14px;">
+                                <span>
+                                    {% if pocket.currency == 'USD' %}${% elif pocket.currency == 'EUR' %}€{% elif pocket.currency == 'GBP' %}£{% elif pocket.currency == 'BTC' %}₿{% endif %}{{ pocket.balance|float|round(1) }} / 
+                                    {% if pocket.currency == 'USD' %}${% elif pocket.currency == 'EUR' %}€{% elif pocket.currency == 'GBP' %}£{% elif pocket.currency == 'BTC' %}₿{% endif %}{{ pocket.goal|float|round(1) }}
+                                </span>
+                                <span style="font-weight: 600; color: #3b82f6;">{% if pocket.goal|float > 0 %}{{ (pocket.balance|float / pocket.goal|float * 100)|int }}{% else %}0{% endif %}%</span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No pockets yet. Create one to get started!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
