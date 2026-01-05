@@ -1,6 +1,8 @@
 💰 Budget & Expense Tracker
 
 A lightweight, powerful web application built with Flask and PostgreSQL to help you track spending, manage income, and visualize your financial habits.
+
+
 🚀 Features
 
     User Accounts: Secure registration and login.
