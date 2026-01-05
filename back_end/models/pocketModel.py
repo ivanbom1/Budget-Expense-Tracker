@@ -27,7 +27,7 @@ class Pocket:
             sql,
             (
                 user_id,
-                data['name'],                      # FIX
+                data.get('pocket_name'),                      # FIX
                 data.get('description'),
                 data.get('balance', 0),
                 data.get('goal', 0),

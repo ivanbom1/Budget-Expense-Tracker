@@ -1,4 +1,4 @@
-from unittest import result
+
 import psycopg2
 from .db_config import Config
 

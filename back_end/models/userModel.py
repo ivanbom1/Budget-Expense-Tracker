@@ -1,4 +1,3 @@
-from unittest import result
 from db.db_connect import Database
 from werkzeug.security import generate_password_hash, check_password_hash
 
