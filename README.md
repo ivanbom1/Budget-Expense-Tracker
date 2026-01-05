@@ -8,6 +8,7 @@ A lightweight, powerful web application built with Flask and PostgreSQL to help 
     User Accounts: Secure registration and login.
     Income & Expense Tracking: Easily log transactions with descriptions and dates.
     Categorization: Organize spending into custom categories (Food, Transport, Bills, etc.) (in progress)
+    Real-Time Widgets: currency exchange and cryptocurrency graphs (in progress)
     Data Persistence: All records are securely stored in a PostgreSQL database.
     Responsive UI: Optimized for both mobile and desktop browsers.
 
