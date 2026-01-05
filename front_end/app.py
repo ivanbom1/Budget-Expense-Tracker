@@ -93,6 +93,7 @@ def dashboard():
         data = res.json()
         if data['status'] == 'success':
             pockets = data.get('pockets', [])
+            print(f"Pockets: {pockets}")
     except Exception as e:
         error = 'Error fetching pockets'
     
@@ -103,7 +104,7 @@ def dashboard():
 def create_pocket():
     user_id = session['user_id']
 
-    name = request.form.get('name')
+    pocket_name = request.form.get('pocket_name')
     description = request.form.get('description')
     goal = request.form.get('goal')
     balance = request.form.get('balance')
@@ -113,7 +114,7 @@ def create_pocket():
         res = requests.post(
             f'{API_URL}/users/{user_id}/pockets',
             json={
-                "name": name,                         # API-level field
+                "pocket_name": pocket_name,                         # API-level field
                 "description": description,
                 "balance": float(balance or 0),
                 "goal": float(goal),
